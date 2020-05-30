@@ -345,7 +345,7 @@ void game()
    fprintf(f,"0\n");
    fclose(f);
    
-   setbkcolor(COLOR(255, 239, 213));
+   setbkcolor(COLOR(146, 227, 48));
    cleardevice();
    show_message(10, 10,"Загадайте число сопернику",0);
    show_message(10 + ((iplayer-1)*200), 70,"Вы",0);
