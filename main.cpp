@@ -133,48 +133,16 @@ int select(int x, int y)
    }
    return -1;
 }
-
-const char *rules_text[7]={
-   "В игре 'быки и коровы' участвуют 2 игрока.Игроки ходят по очереди.",
-   "Каждый участник загадывает число для соперника, число должно",
-   "быть четырехзначным и без повторяющихся цифр. После каждого",
-   "хода отображается число быков и коров каждого игрока. Бык - цифра",
-   "стоит на своем месте, корова - цифра стоит не на своем месте",
-   "Когда один из игроков получает 4 быка, то он выигрывает.",
-   "Чтобы сдаться, нажмите клавишу Esc."
-};
-
-const char *about_text[3]={
-   "Игра написана студентом первого курса кафедры 'прикладная математика и программирование'",
-   "Баев Артем Алексантрович группа ЕТ-112",
-   "Курсовая работа на тему 'Игра по сети 'быки и коровы' '",
-};
 // вывод правил
 void rull()
 {
-   //setbkcolor(COLOR(255, 239, 213));
-   //clearviewport();
    putimage(0, 0, image_rull, COPY_PUT);
-   //setbkmode(COPY_PUT);
-   //settextstyle(10,0,1);
-   //setcolor(COLOR(220, 20, 60));
-   //for(int i=0;i<7;++i)
-      //outtextxy(8,(i+22)*20+5,rules_text[i]);
    while (getch() != KEY_EXIT);
 }
 
 void about()
 {
    putimage(0, 0, image_about, COPY_PUT);
-   //setfillstyle(SOLID_FILL,WHITE);
-   //bar(0,0,500,70);
-   //setbkmode(COPY_PUT);
-   //settextstyle(0,0,1);
-   //setbkcolor(WHITE);
-   //clearviewport();
-   //setcolor(BLACK);
-   //for(int i=0;i<3;++i)
-      //outtextxy(10,i*20+5,about_text[i]);
    while (getch() != KEY_EXIT);
 }
 
