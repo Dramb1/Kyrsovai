@@ -152,6 +152,7 @@ void close()
    }
    freeimage(image_about);
    freeimage(image_game);
+   freeimage(image_rull);
    remove("player1.txt");
    remove("player2.txt");
 }
@@ -206,7 +207,7 @@ void wait_player(int i,const char s[])
 {
    FILE *f;
    char file_name[15];
-   setfillstyle(SOLID_FILL,LIGHTGRAY);
+   setfillstyle(SOLID_FILL,COLOR(158,224,220));
    bar(10,10,500,70);
    sprintf(file_name,"player%d.txt",i);
    show_message(10, 10, "Ожидание хода участника %d",i);
@@ -236,7 +237,7 @@ void wait_player(int i,const char s[])
 void show_message(int x, int y, const char fmt[], int i)
 {
    char msg[100];
-   setfillstyle(SOLID_FILL,COLOR(255, 239, 213));
+   setfillstyle(SOLID_FILL,COLOR(158,224,220));
    bar(x,y,500,70);
    setcolor(BLACK);
    sprintf(msg,fmt,i);
@@ -246,17 +247,21 @@ void show_message(int x, int y, const char fmt[], int i)
 void add_number(const char n[], int player)
 {
    strcpy(numbers[n_numbers],n);
+              bar(500, 90, 800, 600);
+              setbkcolor(COLOR(158,224,220));
    setcolor(BLACK);
    if (cur_move > 1)
    {
       if (player == 1)
       {
+         show_message(500, 90 + (n_numbers/2*30)%510,"<-- Текущая позиция",0);
          outtextxy(10 , 90 + (n_numbers/2*30)%510,n);
          outtextxy(80 , 90 + (n_numbers/2*30)%510,bull);
          outtextxy(140 , 90 + (n_numbers/2*30)%510,cow);
       }
       else
       {      
+         show_message(500, 90 + (n_numbers/2*30)%510,"<-- Текущая позиция",0);
          outtextxy(200 , 90 + ((n_numbers-1)/2*30)%510,n);
          outtextxy(300 , 90 + ((n_numbers-1)/2*30)%510,bull);
          outtextxy(360 , 90 + ((n_numbers-1)/2*30)%510,cow);
@@ -277,7 +282,7 @@ void input_string(int x, int y, char s[], int maxlen)
    show_message(10, 50,"",0); // нет сообщений об ошибках
    while(1)
    {
-      setfillstyle(SOLID_FILL,COLOR(255, 239, 213));
+      setfillstyle(SOLID_FILL,COLOR(158,224,220));
       bar(x,y+3,x+textwidth("0")*maxlen,y+12);
       setcolor(BLACK);
       outtextxy(x+2,y-5+5,s);
@@ -344,9 +349,8 @@ void game()
    f=fopen(file_name,"w");
    fprintf(f,"0\n");
    fclose(f);
-   
-   setbkcolor(COLOR(146, 227, 48));
-   cleardevice();
+   setbkcolor(COLOR(158,224,220));
+   clearviewport();
    show_message(10, 10,"Загадайте число сопернику",0);
    show_message(10 + ((iplayer-1)*200), 70,"Вы",0);
    show_message(80 , 70,"Быки",0);
