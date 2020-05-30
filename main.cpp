@@ -49,7 +49,6 @@ void wait_key();
 int main()
 {
    initwindow(WIDTH, HEIGHT);
-   // удалить файлы после предыдущей игры
    load();
    start();
    menu();
@@ -95,7 +94,6 @@ void menu()
    while (1)
    {
       putimage(0, 0, image_game, COPY_PUT);
-   //clearviewport();
       for (i = 0; i < N_BUTTONS; i++)
       {
          putimage(buttons[i].left, buttons[i].top,
@@ -249,10 +247,6 @@ void add_number(const char n[], int player)
 {
    strcpy(numbers[n_numbers],n);
    setcolor(BLACK);
-   // char bull_str[1];
-   // char cow_str[1];
-    // bull_str[0] = bull;
-     // cow_str[0] = cow;
    if (cur_move > 1)
    {
       if (player == 1)
@@ -352,7 +346,6 @@ void game()
    fclose(f);
    
    setbkcolor(COLOR(255, 239, 213));
-   settextstyle(6,0,1);
    cleardevice();
    show_message(10, 10,"Загадайте число сопернику",0);
    show_message(10 + ((iplayer-1)*200), 70,"Вы",0);
