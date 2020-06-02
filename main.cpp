@@ -78,7 +78,7 @@ void load() // загрузка файлов игры
    image_rull = loadBMP("window_rull.bmp");
 }
 
-void start()
+void start() // стартовое окно
 {
    IMAGE *image;
    image = loadBMP("window_start.bmp");
@@ -103,7 +103,7 @@ void menu()
       i = -1;
       while (i < 0)
       {
-         while (mousebuttons() != 1);
+         while (mousebuttons() != 1)
             i = select(mousex(), mousey());
       }
       
@@ -117,7 +117,7 @@ void menu()
    }
 }
 
-int select(int x, int y)
+int select(int x, int y) // определение нажатой кнопки меню
 {
    for (int i = 0; i < N_BUTTONS; i++)
    {
@@ -131,8 +131,8 @@ int select(int x, int y)
    }
    return -1;
 }
-// вывод правил
-void rull()
+
+void rull() // вывод правил
 {
    putimage(0, 0, image_rull, COPY_PUT);
    while (getch() != KEY_EXIT);
@@ -144,7 +144,7 @@ void about()
    while (getch() != KEY_EXIT);
 }
 
-void close()
+void close() // освобождение памяти
 {
    for (int i = 0; i < N_BUTTONS; i++)
    {
@@ -157,7 +157,7 @@ void close()
    remove("player2.txt");
 }
 
-int file_exists(const char *file_name)
+int file_exists(const char *file_name) // проверка файла
 { 
    FILE *f = fopen(file_name, "r");
    if (f != NULL)
@@ -203,7 +203,7 @@ int proverka(char n[],int len) // проверка числа на повторяющиеся цифры
    return 1;
 }
 
-void wait_player(int i,const char s[])
+void wait_player(int i,const char s[]) // ожидание и считывание данных соперника
 {
    FILE *f;
    char file_name[15];
@@ -234,7 +234,7 @@ void wait_player(int i,const char s[])
    }
 }
 
-void show_message(int x, int y, const char fmt[], int i)
+void show_message(int x, int y, const char fmt[], int i) // вывод сообщения
 {
    char msg[100];
    setfillstyle(SOLID_FILL,COLOR(158,224,220));
@@ -244,24 +244,26 @@ void show_message(int x, int y, const char fmt[], int i)
    outtextxy(x,y,msg);
 }
 
-void add_number(const char n[], int player)
+void add_number(const char n[], int player) // добавление числа в массив и его вывод
 {
    strcpy(numbers[n_numbers],n);
               bar(500, 90, 800, 600);
               setbkcolor(COLOR(158,224,220));
-   setcolor(BLACK);
+   setcolor(COLOR(255, 0, 60));
    if (cur_move > 1)
    {
       if (player == 1)
       {
-         show_message(500, 90 + (n_numbers/2*30)%510,"<-- Текущая позиция",0);
+         outtextxy(500, 90 + (n_numbers/2*30)%510,"<-- Текущая позиция");
+         setcolor(BLACK);
          outtextxy(10 , 90 + (n_numbers/2*30)%510,n);
          outtextxy(80 , 90 + (n_numbers/2*30)%510,bull);
          outtextxy(140 , 90 + (n_numbers/2*30)%510,cow);
       }
       else
       {      
-         show_message(500, 90 + (n_numbers/2*30)%510,"<-- Текущая позиция",0);
+         outtextxy(500, 90 + (n_numbers/2*30)%510,"<-- Текущая позиция");
+         setcolor(BLACK);
          outtextxy(200 , 90 + ((n_numbers-1)/2*30)%510,n);
          outtextxy(300 , 90 + ((n_numbers-1)/2*30)%510,bull);
          outtextxy(360 , 90 + ((n_numbers-1)/2*30)%510,cow);
@@ -275,7 +277,7 @@ void add_number(const char n[], int player)
    n_numbers++;
 }
 
-void input_string(int x, int y, char s[], int maxlen)
+void input_number(int x, int y, char s[], int maxlen) // вывод и проверка числа
 {
   int len=0;
    s[0]=0;
@@ -300,7 +302,7 @@ void input_string(int x, int y, char s[], int maxlen)
          }
          else
          {
-            show_message(10, 50,"Слово должно содержать четыре неповторяющиеся цифры от 0 до 9",0);
+            show_message(10, 50,"Число должно содержать четыре неповторяющиеся цифры от 0 до 9",0);
          }
       }
       else if(k==KEY_BACKSPACE && len>0)
@@ -320,7 +322,7 @@ void input_string(int x, int y, char s[], int maxlen)
       }
       else
       {
-         show_message(10, 50,"Слово должно содержать четыре неповторяющиеся цифры от 0 до 9",0);
+         show_message(10, 50,"Число должно содержать четыре неповторяющиеся цифры от 0 до 9",0);
       }
       
    }
@@ -331,6 +333,14 @@ void wait_key()
    int k=getch(); 
    if(k==0) getch();
 }
+/*
+void print_table()
+{
+   setcolor(BLACK);
+    show_message(5,75,"--------------------------------------",0);
+   for (int i = 0; i < 600; i+=10)
+      outtextxy(5,75,"|");
+}*/
 
 void game()
 {
@@ -351,6 +361,9 @@ void game()
    fclose(f);
    setbkcolor(COLOR(158,224,220));
    clearviewport();
+   
+  // print_table();
+   
    show_message(10, 10,"Загадайте число сопернику",0);
    show_message(10 + ((iplayer-1)*200), 70,"Вы",0);
    show_message(80 , 70,"Быки",0);
@@ -367,22 +380,25 @@ void game()
          if(i==iplayer)
          {
             show_message(10, 10,"Введите число",0);
-            input_string(10, 25, number, 4);
+            input_number(10, 30, number, 4);
             if (number[0] == '-')
             {
                f=fopen(file_name,"w");
                fprintf(f,"%d\n-\n",cur_move);
                fclose(f);
-               show_message(10, 10, "Участник %d сдался",i);
+               setcolor(COLOR(255, 0, 60));
+               outtextxy(10, 10, "ВЫ СДАЛИСЬ, В СЛЕДУЮЩИЙ РАЗ ПОВЕЗЕТ");
                wait_key();
                return;
             }
             else if(bull[0] == '4')
             {
                f=fopen(file_name,"w");
+               add_number(number, i);
                fprintf(f,"%d\n+\n",cur_move);
                fclose(f);
-               show_message(10, 10, "Участник %d выиграл",i);
+               setcolor(COLOR(252, 105, 0));
+               outtextxy(10, 10, "ВЫ ВЫИГРАЛИ, УРААА!!!");
                wait_key();
                return;
             }
@@ -399,14 +415,26 @@ void game()
             wait_player(i,number);
             if(number[0]=='-') {
                // сдался
-               show_message(10, 10, "Участник %d сдался",i);
+               setcolor(COLOR(252, 105, 0));
+               outtextxy(10, 10, "ПРОТИВНИК СДАЛСЯ, ВЫ ПОБЕДИЛИ, УРААА!!!");
                remove(file_name); // удаляем свой файл
                wait_key();
                return;
             }
             if (number[0]=='+')
             {
-               show_message(10, 10, "Участник %d выиграл",i);
+               for (int j = 0;j < 4; j++)
+               {
+                  number[j] = numbers[1][j];
+               }
+               setcolor(COLOR(255, 0, 60));
+               outtextxy(500, 90 + ((n_numbers+1)/2*30)%510,"<-- Текущая позиция");
+               setcolor(BLACK);
+               outtextxy(10 , 90 + ((n_numbers)/2*30)%510,number);
+               outtextxy(80 , 90 + ((n_numbers)/2*30)%510,"4");
+               outtextxy(140 , 90 + ((n_numbers)/2*30)%510,"0");
+               setcolor(COLOR(255, 0, 60));
+               outtextxy(10, 10, "ПРОТИВНИК ВЫИГРАЛ, В СЛЕДУЮЩИЙ РАЗ ПОВЕЗЕТ");
                remove(file_name); // удаляем свой файл
                wait_key();
                return;
