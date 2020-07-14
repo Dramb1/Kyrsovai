@@ -30,6 +30,8 @@ Button buttons[N_BUTTONS];
 IMAGE *image_about;
 IMAGE *image_game;
 IMAGE *image_rull;
+IMAGE *image_table1;
+IMAGE *image_table2;
 
 void load();
 void start();
@@ -76,6 +78,8 @@ void load() // загрузка файлов игры
    image_game = loadBMP("window_game.bmp");
    image_about = loadBMP("window_about.bmp");
    image_rull = loadBMP("window_rull.bmp");
+   image_table1 = loadBMP("table1.bmp");
+   image_table2 = loadBMP("table2.bmp");
 }
 
 void start() // стартовое окно
@@ -153,6 +157,8 @@ void close() // освобождение памяти
    freeimage(image_about);
    freeimage(image_game);
    freeimage(image_rull);
+   freeimage(image_table1);
+   freeimage(image_table2);
    remove("player1.txt");
    remove("player2.txt");
 }
@@ -247,26 +253,26 @@ void show_message(int x, int y, const char fmt[], int i) // вывод сообщения
 void add_number(const char n[], int player) // добавление числа в массив и его вывод
 {
    strcpy(numbers[n_numbers],n);
-              bar(500, 90, 800, 600);
+              bar(450, 90, 800, 600);
               setbkcolor(COLOR(158,224,220));
    setcolor(COLOR(255, 0, 60));
    if (cur_move > 1)
    {
       if (player == 1)
       {
-         outtextxy(500, 90 + (n_numbers/2*30)%510,"<-- Текущая позиция");
+         outtextxy(450, 120 + ((n_numbers-2)/2*30)%480,"<-- Текущая позиция");
          setcolor(BLACK);
-         outtextxy(10 , 90 + (n_numbers/2*30)%510,n);
-         outtextxy(80 , 90 + (n_numbers/2*30)%510,bull);
-         outtextxy(140 , 90 + (n_numbers/2*30)%510,cow);
+         outtextxy(20 , 120 + ((n_numbers-2)/2*30)%480,n);
+         outtextxy(90 , 120 + ((n_numbers-2)/2*30)%480,bull);
+         outtextxy(150 , 120 + ((n_numbers-2)/2*30)%480,cow);
       }
       else
       {      
-         outtextxy(500, 90 + (n_numbers/2*30)%510,"<-- Текущая позиция");
+         outtextxy(450, 120 + ((n_numbers-2)/2*30)%480,"<-- Текущая позиция");
          setcolor(BLACK);
-         outtextxy(200 , 90 + ((n_numbers-1)/2*30)%510,n);
-         outtextxy(300 , 90 + ((n_numbers-1)/2*30)%510,bull);
-         outtextxy(360 , 90 + ((n_numbers-1)/2*30)%510,cow);
+         outtextxy(220 , 120 + ((n_numbers-3)/2*30)%480,n);
+         outtextxy(310 , 120 + ((n_numbers-3)/2*30)%480,bull);
+         outtextxy(370 , 120 + ((n_numbers-3)/2*30)%480,cow);
       }
    }
    else if (iplayer == player)
@@ -284,10 +290,12 @@ void input_number(int x, int y, char s[], int maxlen) // вывод и проверка числа
    show_message(10, 50,"",0); // нет сообщений об ошибках
    while(1)
    {
-      setfillstyle(SOLID_FILL,COLOR(158,224,220));
-      bar(x,y+3,x+textwidth("0")*maxlen,y+12);
+      setfillstyle(SOLID_FILL,COLOR(89, 154, 186));
+      bar(x,y,x+textwidth("0")*maxlen+4,y+20);
       setcolor(BLACK);
-      outtextxy(x+2,y-5+5,s);
+      setbkcolor(COLOR(89, 154, 186));
+      outtextxy(x+2,y+2,s);
+      setbkcolor(COLOR(158,224,220));
       int k=getch();
       char c=k; // так как нужно сравнивать с [signed] char
       show_message(10 , 50, "", 0); // очистить сообщения об ошибках
@@ -333,14 +341,6 @@ void wait_key()
    int k=getch(); 
    if(k==0) getch();
 }
-/*
-void print_table()
-{
-   setcolor(BLACK);
-    show_message(5,75,"--------------------------------------",0);
-   for (int i = 0; i < 600; i+=10)
-      outtextxy(5,75,"|");
-}*/
 
 void game()
 {
@@ -362,15 +362,10 @@ void game()
    setbkcolor(COLOR(158,224,220));
    clearviewport();
    
-  // print_table();
-   
-   show_message(10, 10,"Загадайте число сопернику",0);
-   show_message(10 + ((iplayer-1)*200), 70,"Вы",0);
-   show_message(80 , 70,"Быки",0);
-   show_message(140, 70,"Коровы",0);
-   show_message(200 / (iplayer + ((iplayer -1) * 198)), 70,"Cоперник",0);
-   show_message(300 , 70,"Быки",0);
-   show_message(360, 70,"Коровы",0);
+   if(iplayer == 1)
+      putimage(5, 70, image_table1, COPY_PUT);
+   else
+      putimage(5, 70, image_table2, COPY_PUT);
    wait_key();
    while (1)
    {
@@ -428,7 +423,7 @@ void game()
                   number[j] = numbers[1][j];
                }
                setcolor(COLOR(255, 0, 60));
-               outtextxy(500, 90 + ((n_numbers+1)/2*30)%510,"<-- Текущая позиция");
+               outtextxy(450, 90 + ((n_numbers+1)/2*30)%510,"<-- Текущая позиция");
                setcolor(BLACK);
                outtextxy(10 , 90 + ((n_numbers)/2*30)%510,number);
                outtextxy(80 , 90 + ((n_numbers)/2*30)%510,"4");
